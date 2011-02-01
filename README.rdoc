@@ -1,0 +1,46 @@
+= Log4r-XMPP
+
+== Description
+
+Log4r-XMPP adds a XMPP/Jabber outputter to Log4r.
+
+== Requirements
+
+The following gems are required to use Log4r-XMPP:
+
+* log4r
+* xmpp4r (http://home.gna.org/xmpp4r/)
+
+== Using Log4r-XMPP
+
+Requiring 'log4r-xmpp' will add an XMPPOutputter to Log4r. It is as simple as
+using any other Log4r Outputter and can use most formatters in addition to the
+default.
+
+===Options:
+
+ :buffsize   => The number of logging events to buffer before sending
+ :username   => Sending user's XMPP/Jabber account
+ :password   => Sending user's XMPP/Jabber account password
+ :resource   => Sending user's XMPP/Jabber resource (optional)
+ :recipients => An array of accounts to send Log4r messages to
+
+===Example:
+
+    options = { :buffsize => 10,
+                :username   => 'log4r@localhost',
+                :password   => 'secret',
+                :resource   => 'Log4r',
+                :recipients => [recipient1@localhost, recipient2@localhost]
+              }
+
+    outputter = Log4r::XMPPOutputter.new('xmpp', options)
+
+    mylog = Log4r::Logger.new 'mylog'
+    mylog.outputters = outputter
+
+    mylog.debug "This is a test message sent at level DEBUG"
+
+== Copyright
+
+Copyright 2011 Jonathan P. Voss
