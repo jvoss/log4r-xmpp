@@ -24,7 +24,7 @@ describe "XMPP Outputter" do
 
   before(:all) do
 
-    @options = { :buffsize => 10,
+    @options = { :buffsize   => 10,
                  :username   => 'log4r@localhost',
                  :password   => 'secret',
                  :resource   => 'Log4r',
