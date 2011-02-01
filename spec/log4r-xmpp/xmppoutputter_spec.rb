@@ -16,10 +16,11 @@
 # along with Log4r-XMPP. If not, see <http://www.gnu.org/licenses/>.
 #
 
+require "rspec"
 require "log4r"
 require "log4r-xmpp"
 
-context "XMPP Outputter" do
+describe "XMPP Outputter" do
 
   before(:all) do
 
@@ -53,4 +54,4 @@ context "XMPP Outputter" do
 
   end # describe "Logging events"
 
-end # context "XMPP Outputter"
+end # describe "XMPP Outputter"
