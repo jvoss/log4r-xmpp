@@ -19,7 +19,7 @@ default.
 
 ===Options:
 
- :buffsize   => The number of logging events to buffer before sending
+ :buffsize   => The number of logging events to buffer before sending (default 1)
  :username   => Sending user's XMPP/Jabber account
  :password   => Sending user's XMPP/Jabber account password
  :resource   => Sending user's XMPP/Jabber resource (optional)
@@ -27,7 +27,7 @@ default.
 
 ===Example:
 
-    options = { :buffsize => 10,
+    options = { :buffsize   => 10,
                 :username   => 'log4r@localhost',
                 :password   => 'secret',
                 :resource   => 'Log4r',
