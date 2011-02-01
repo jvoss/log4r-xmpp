@@ -31,7 +31,7 @@ default.
                 :username   => 'log4r@localhost',
                 :password   => 'secret',
                 :resource   => 'Log4r',
-                :recipients => [recipient1@localhost, recipient2@localhost]
+                :recipients => ['recipient1@localhost', 'recipient2@localhost']
               }
 
     outputter = Log4r::XMPPOutputter.new('xmpp', options)
