@@ -60,7 +60,14 @@ module Log4r
     #
     def flush
 
-      synch { @buff.each{|event| write(format(event))} }
+      synch {
+
+        messages = []
+        @buff.each{|event| messages.push(format(event))}
+        write(messages.to_s)
+
+      }
+
       @buff.clear
 
       Logger.log_internal {"Flushed XMPPOutputter '#{@name}"}
