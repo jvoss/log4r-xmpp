@@ -107,11 +107,11 @@ module Log4r
 
       @buffsize = (hash[:buffsize] or hash['buffsize'] or 1).to_i
 
-      @username = hash[:username]
-      @password = hash[:password]
+      @username = hash[:username] or raise ArgumentError, "Username required"
+      @password = hash[:password] or raise ArgumentError, "Password required"
       @resource = hash[:resource] ||= 'Log4r'
 
-      @recipients = hash[:recipients]
+      @recipients = hash[:recipients] or raise ArgumentError, "Recipients required"
 
     end # def _validate
 

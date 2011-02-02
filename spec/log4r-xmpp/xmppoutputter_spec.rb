@@ -38,6 +38,65 @@ describe "XMPP Outputter" do
 
   end # before(:all)
 
+  describe "initialization" do
+
+    it "should require a username" do
+
+      options = @options.dup
+      options.delete(:username)
+
+      l = lambda { Log4r::XMPPOutputter.new('xmpp', options) }
+
+      l.should raise_error(ArgumentError)
+
+    end # it "should require a username"
+
+    it "should require a password" do
+
+      options = @options.dup
+      options.delete(:password)
+
+      l = lambda { Log4r::XMPPOutputter.new('xmpp', options) }
+
+      l.should raise_error(ArgumentError)
+
+    end # it "should require a password"
+
+    it "should require recipients" do
+
+      options = @options.dup
+      options.delete(:recipients)
+
+      l = lambda { Log4r::XMPPOutputter.new('xmpp', options) }
+
+      l.should raise_error(ArgumentError)
+
+    end # it "should require recipients"
+
+    it "should not require a buffer size" do
+
+      options = @options.dup
+      options.delete(:buffsize)
+
+      l = lambda { Log4r::XMPPOutputter.new('xmpp', options) }
+
+      l.should_not raise_error(ArgumentError)
+
+    end # it "should not require a buffer size"
+
+    it "should not require a resource" do
+
+      options = @options.dup
+      options.delete(:resource)
+
+      l = lambda{ Log4r::XMPPOutputter.new('xmpp', options) }
+
+      l.should_not raise_error(ArgumentError)
+
+    end # it "should not require a resource"
+
+  end  # describe "initialization"
+
   describe "logging events" do
 
     it "should buffer messages" do
@@ -51,7 +110,25 @@ describe "XMPP Outputter" do
       buff.class.should == Array
       buff[0].data.should == message
 
+      buff.clear
+
     end # it "should send messages"
+
+    it "should send messages when the buffer is full" do
+
+      outputter = double(@log.outputters.first)
+      jabber    = double(@log.outputters.first.instance_variable_get(:@client))
+
+      outputter.should_receive(:debug).exactly(@options[:buffsize]).times
+      outputter.should_receive(:flush)
+
+      jabber.should_receive(:send).exactly(1).times
+
+      @options[:buffsize].times { @log.debug "Test message" }
+
+    end # it "should send messages"
+
+    it "should clear the buffer after being sent"
 
   end # describe "Logging events"
 
