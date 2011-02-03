@@ -22,21 +22,27 @@ require "log4r-xmpp"
 
 describe "XMPP Outputter" do
 
-  before(:all) do
+  before(:each) do
 
     @options = { :buffsize   => 10,
                  :username   => 'log4r@localhost',
                  :password   => 'secret',
                  :resource   => 'Log4r',
-                 :recipients => 'testuser@localhost'
+                 :recipients => ['testuser@localhost']
                }
 
-    outputter = Log4r::XMPPOutputter.new('xmpp', @options)
+    @outputter = Log4r::XMPPOutputter.new('xmpp', @options)
 
     @log = Log4r::Logger.new 'testlog'
-    @log.outputters = outputter
+    @log.outputters = @outputter
 
   end # before(:all)
+
+  after(:each) do
+
+    @log = nil
+
+  end # after(:each)
 
   describe "initialization" do
 
@@ -97,6 +103,19 @@ describe "XMPP Outputter" do
 
   end  # describe "initialization"
 
+  describe "Log4r support" do
+
+    it "should satisfy Log4r::Outputter requirements" do
+
+      @outputter.public_methods.include?('flush').should == true
+
+      @outputter.private_methods.include?('canonical_log').should == true
+      @outputter.private_methods.include?('write').should == true
+
+    end # it "should satisfy Log4r::Outputter requirements"
+
+  end # describe "Log4r support"
+
   describe "logging events" do
 
     it "should buffer messages" do
@@ -114,22 +133,34 @@ describe "XMPP Outputter" do
 
     end # it "should send messages"
 
-    it "should send messages when the buffer is full" do
+    it "should flush messages when the buffer is full" do
 
-      outputter = double(@log.outputters.first)
-      jabber    = double(@log.outputters.first.instance_variable_get(:@client))
-
-      outputter.should_receive(:debug).exactly(@options[:buffsize]).times
-      outputter.should_receive(:flush)
-
-      jabber.should_receive(:send).exactly(1).times
+      @outputter.should_receive(:flush)
 
       @options[:buffsize].times { @log.debug "Test message" }
 
     end # it "should send messages"
 
-    it "should clear the buffer after being sent"
+    it "flush should clear the buffer after messages are sent" do
 
-  end # describe "Logging events"
+      @options[:buffsize].times { @log.debug "Test message" }
+
+      buffer = @outputter.instance_variable_get(:@buff)
+
+      buffer.empty?.should == true
+
+    end # it "flush should clear the buffer after being sent"
+
+    it "should send messages to Jabber server" do
+
+      jabber = @outputter.instance_variable_get(:@client)
+
+      jabber.should_receive(:send).exactly(1).times
+
+      @options[:buffsize].times { @log.debug "Test message" }
+
+    end # it "should send messages to XMPP server"
+
+  end # describe "logging events"
 
 end # describe "XMPP Outputter"

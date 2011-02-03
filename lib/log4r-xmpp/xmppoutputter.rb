@@ -70,7 +70,7 @@ module Log4r
 
       @buff.clear
 
-      Logger.log_internal {"Flushed XMPPOutputter '#{@name}"}
+      Logger.log_internal {"Flushed XMPPOutputter '#{@name}'"}
 
     end # def flush
 
@@ -97,7 +97,15 @@ module Log4r
 
         message = Jabber::Message.new(to, body).set_type(:normal).set_id('1')
 
-        @client.send message
+        begin
+          @client.send message
+        rescue => e
+          xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
+
+          Logger.log_internal(-2){
+            "XMPPOutputter '#{@name}' failed to send message: #{xmpp_error}"
+          }
+        end
 
       end # @recipients.each
 
