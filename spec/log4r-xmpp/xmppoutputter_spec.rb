@@ -107,23 +107,47 @@ describe "XMPP Outputter" do
 
     it "should satisfy Log4r::Outputter requirements" do
 
-      canonical_log = :canonical_log
+      # Public Instance Methods
       flush         = :flush
+      formatter     = :formatter
+      level         = :level
+      only_at       = :only_at
+
+      # Protected Instance Methods
+      validate_hash = :validate_hash
+
+      # Private Instance Methods
+      canonical_log = :canonical_log
+      format        = :format
+      synch         = :synch
       write         = :write
 
       # Pre Ruby 1.9, method arrays included strings instead of symbols
       if RUBY_VERSION < '1.9'
 
-        canonical_log = 'canonical_log'
-        flush         = 'flush'
-        write         = 'write'
+        canonical_log = canonical_log.to_s
+        flush         = flush.to_s
+        format        = format.to_s
+        formatter     = formatter.to_s
+        level         = level.to_s
+        only_at       = only_at.to_s
+        synch         = synch.to_s
+        validate_hash = validate_hash.to_s
+        write         = write.to_s
 
       end # if RUBY_VERSION
 
-      @outputter.public_methods.include?(flush).should == true
+      @outputter.public_methods.include?(flush).should            == true
+      @outputter.public_methods.include?(formatter).should        == true
+      @outputter.public_methods.include?(level).should            == true
+      @outputter.public_methods.include?(only_at).should          == true
 
-      @outputter.private_methods.include?(canonical_log).should == true
-      @outputter.private_methods.include?(write).should == true
+      @outputter.protected_methods.include?(validate_hash).should == true
+
+      @outputter.private_methods.include?(canonical_log).should   == true
+      @outputter.private_methods.include?(format).should          == true
+      @outputter.private_methods.include?(synch).should           == true
+      @outputter.private_methods.include?(write).should           == true
 
     end # it "should satisfy Log4r::Outputter requirements"
 
