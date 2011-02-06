@@ -10,11 +10,13 @@ begin
     s.homepage      = 'http://github.com/jvoss/log4r-xmpp'
     s.description   = 'Add XMPP/Jabber functionality to Log4r'
     s.authors       = ['Jonathan P. Voss']
-    s.files         =  FileList['[A-Z]*', '{lib,test}/**/*', '.gitignore']
+    s.files         =  FileList['[A-Z]*', '{lib,spec,test}/**/*', '.gitignore']
 
     s.add_dependency 'log4r'
     s.add_dependency 'xmpp4r'
-    s.add_dependency 'rake'
+
+    s.add_development_dependency 'rake'
+    s.add_development_dependency 'rspec'
 
   end # Jeweler::Tasks.new do |s|
 
