@@ -147,12 +147,13 @@ module Log4r
     #
     def write(data)
 
+      body = ''
+
+      data.kind_of?(Array) ? data.each{|x| body << x} : body = data
+
       @recipients.each do |recipient|
 
-        to   = recipient
-        body = ''
-        
-        data.kind_of?(Array) ? data.each{|x| body << x} : body = data
+        to = recipient
 
         message = Jabber::Message.new(to, body).set_type(:normal).set_id('1')
 
