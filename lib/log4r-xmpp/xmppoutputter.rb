@@ -28,17 +28,22 @@ module Log4r
     def initialize(_name, hash={})
 
       super(_name, hash)
-      _validate(hash)
 
       @buff = []
 
       begin
+
         connect
         Logger.log_internal { "XMPPOutputter '#{@name}' connected as #{@username}"}
+
       rescue => e
+
+        xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
+
         Logger.log_internal(-2){
-          "XMPPOutputter '#{@name}' failed to connect to XMPP server!"
+          "XMPPOutputter '#{@name}' failed to connect to XMPP server: #{xmpp_error}"
         }
+
       end # begin
       
     end # def initialize
@@ -56,7 +61,7 @@ module Log4r
 
     end # def connect
 
-    # Immediately sends any messages in the buffer
+    # Call to force an outputter to write any buffered log events.
     #
     def flush
 
@@ -74,8 +79,29 @@ module Log4r
 
     end # def flush
 
+    protected
+
+    # Validates the common hash arguments as required by Log4r then sets up the XMPP options
+    # for the outputter.
+    #
+    def validate_hash(hash)
+
+      super(hash)
+
+      @buffsize = (hash[:buffsize]    or hash['buffsize'] or 1).to_i
+
+      @username = hash[:username]     or raise ArgumentError, "Username required"
+      @password = hash[:password]     or raise ArgumentError, "Password required"
+      @resource = hash[:resource]     ||= 'Log4r'
+
+      @recipients = hash[:recipients] or raise ArgumentError, "Recipients required"
+
+    end # def validate_hash
+
     private
 
+    # This method handles all log events passed to this Outputter.
+    #
     def canonical_log(event)
 
       synch {
@@ -88,6 +114,8 @@ module Log4r
 
     end # def canonical_log
 
+    # Method to actually write the formatted data to XMPP.
+    #
     def write(data)
 
       @recipients.each do |recipient|
@@ -111,18 +139,6 @@ module Log4r
 
     end # def write
 
-    def _validate(hash)
-
-      @buffsize = (hash[:buffsize] or hash['buffsize'] or 1).to_i
-
-      @username = hash[:username] or raise ArgumentError, "Username required"
-      @password = hash[:password] or raise ArgumentError, "Password required"
-      @resource = hash[:resource] ||= 'Log4r'
-
-      @recipients = hash[:recipients] or raise ArgumentError, "Recipients required"
-
-    end # def _validate
-
-  end # clss XmppOutputter
+  end # class XMPPOutputter
 
 end # module Log4r
