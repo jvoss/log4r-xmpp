@@ -40,9 +40,11 @@ module Log4r
 
         xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
 
-        Logger.log_internal(-2){
+        Logger.log_internal(-2) do
+
           "XMPPOutputter '#{@name}' failed to connect to XMPP server: #{xmpp_error}"
-        }
+
+        end # Logger.log_internal
 
       end # begin
       
@@ -65,17 +67,17 @@ module Log4r
     #
     def flush
 
-      synch {
+      synch do
 
         messages = []
         @buff.each{|event| messages.push(format(event))}
         write(messages.to_s)
 
-      }
+      end # synch
 
       @buff.clear
 
-      Logger.log_internal {"Flushed XMPPOutputter '#{@name}'"}
+      Logger.log_internal { "Flushed XMPPOutputter '#{@name}'" }
 
     end # def flush
 
@@ -104,13 +106,13 @@ module Log4r
     #
     def canonical_log(event)
 
-      synch {
+      synch do
 
         @buff.push event if @buff.size <= @buffsize
 
         flush if @buff.size == @buffsize # TODO a better way to clear the buffer?
 
-      }
+      end # synch
 
     end # def canonical_log
 
@@ -126,14 +128,20 @@ module Log4r
         message = Jabber::Message.new(to, body).set_type(:normal).set_id('1')
 
         begin
+
           @client.send message
+
         rescue => e
+
           xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
 
-          Logger.log_internal(-2){
+          Logger.log_internal(-2) do
+
             "XMPPOutputter '#{@name}' failed to send message: #{xmpp_error}"
-          }
-        end
+
+          end # Logger.log_internal
+
+        end # begin
 
       end # @recipients.each
 
