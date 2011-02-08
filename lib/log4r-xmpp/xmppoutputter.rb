@@ -98,7 +98,7 @@ module Log4r
 
         @buff.each{ |event| messages.push( format(event) ) }
 
-        write(messages.to_s)
+        write(messages)
 
       end # synch
 
@@ -150,7 +150,9 @@ module Log4r
       @recipients.each do |recipient|
 
         to   = recipient
-        body = data
+        body = ''
+        
+        data.kind_of?(Array) ? data.each{|x| body << x} : body = data
 
         message = Jabber::Message.new(to, body).set_type(:normal).set_id('1')
 
