@@ -9,7 +9,7 @@ Log4r-XMPP adds a XMPP/Jabber outputter to Log4r.
 The following gems are required to use Log4r-XMPP:
 
 * log4r
-* xmpp4r (http://home.gna.org/xmpp4r/)
+* xmpp4r (http://home.gna.org/xmpp4r)
 
 == Using Log4r-XMPP
 
