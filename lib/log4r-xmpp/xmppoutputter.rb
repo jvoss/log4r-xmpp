@@ -25,6 +25,31 @@ module Log4r
 
     attr_reader :username, :password, :resource, :recipients
 
+    # XMPPOutputter is initialized the same as other Log4r Outputters with the
+    # addition of the following hash options:
+    #
+    #   :buffsize   => The number of logging events to buffer before sending (default 1)
+    #   :username   => Sending user's XMPP/Jabber account username
+    #   :password   => Sending user's XMPP/Jabber account password
+    #   :resource   => Optional sending user's XMPP/Jabber resource (default 'Log4r')
+    #   :recipients => Array of usernames to send Log4r log statements to
+    #
+    # Example:
+    #
+    #   options => { :buffsize   => 10,
+    #                :username   => 'log4r@example.com',
+    #                :password   => 'secret',
+    #                :resource   => 'Log4r',
+    #                :recipients => ['recipient1@example.com', 'recipient2@example.com']
+    #              }
+    #
+    #   outputter = Log4r::XMPPOutputter.new('xmpp', options)
+    #
+    #   mylog = Log4r::Logger.new 'mylog'
+    #   mylog.outputters = outputter
+    #
+    #   mylog.debug "This is a test message sent at level DEBUG"
+    #
     def initialize(_name, hash={})
 
       super(_name, hash)
@@ -70,7 +95,9 @@ module Log4r
       synch do
 
         messages = []
-        @buff.each{|event| messages.push(format(event))}
+
+        @buff.each{ |event| messages.push( format(event) ) }
+
         write(messages.to_s)
 
       end # synch
