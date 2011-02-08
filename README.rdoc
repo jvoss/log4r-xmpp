@@ -40,4 +40,3 @@ default.
     mylog.outputters = outputter
 
     mylog.debug "This is a test message sent at level DEBUG"
-
