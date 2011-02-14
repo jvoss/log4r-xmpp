@@ -27,6 +27,8 @@ default.
 
 ===Example:
 
+    require 'log4r-xmpp'
+
     options = { :buffsize   => 10,
                 :username   => 'log4r@example.com',
                 :password   => 'secret',
