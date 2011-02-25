@@ -117,6 +117,9 @@ module Log4r
 
       super(hash)
 
+      # Convert hash keys to symbols if provided as strings (as if configured by YAML)
+      hash = hash.inject({}){|temp,(k,v)| temp[k.to_sym] = v; temp}
+
       @buffsize = (hash[:buffsize]    or hash['buffsize'] or 1).to_i
 
       @username = hash[:username]     or raise ArgumentError, "Username required"

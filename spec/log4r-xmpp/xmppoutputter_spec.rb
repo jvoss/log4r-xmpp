@@ -18,6 +18,7 @@
 
 require "rspec"
 require "log4r"
+require "log4r/yamlconfigurator"
 require "log4r-xmpp"
 
 describe "XMPP Outputter" do
@@ -150,6 +151,41 @@ describe "XMPP Outputter" do
       @outputter.private_methods.include?(write).should           == true
 
     end # it "should satisfy Log4r::Outputter requirements"
+
+    it "should accept strings as keys in the configuration hash" do
+
+      options = { 'buffsize'   => 10,
+                  'username'   => 'log4r@localhost',
+                  'password'   => 'secret',
+                  'resource'   => 'Log4r',
+                  'recipients' => ['testuser@localhost']
+               }
+
+      outputter = Log4r::XMPPOutputter.new('xmpp', options)
+
+      log = Log4r::Logger.new 'testlog'
+      log.outputters = @outputter
+
+      log.outputters[0].username.should   == options['username']
+      log.outputters[0].password.should   == options['password']
+      log.outputters[0].resource.should   == options['resource']
+      log.outputters[0].recipients.should == options['recipients']
+
+    end # it "should accept strings as keys in the configuration hash" do
+
+    it "should satisfy Log4r::Yamlconfigurator requirements" do
+
+      path = File.dirname(__FILE__)
+
+      Log4r::YamlConfigurator.load_yaml_file("#{path}/log4r-xmpp.yaml")
+
+      Log4r::Logger['mylogger'].outputters[0].class.should      == Log4r::XMPPOutputter
+      Log4r::Logger['mylogger'].outputters[0].username.should   == 'log4r@localhost'
+      Log4r::Logger['mylogger'].outputters[0].password.should   == 'secret'
+      Log4r::Logger['mylogger'].outputters[0].resource.should   == 'Log4r-XMPP'
+      Log4r::Logger['mylogger'].outputters[0].recipients.should == ['user1@localhost', 'user2@localhost']
+
+    end # it "should satisfy Log4r::Yamlconfigurator requirements"
 
   end # describe "Log4r support"
 

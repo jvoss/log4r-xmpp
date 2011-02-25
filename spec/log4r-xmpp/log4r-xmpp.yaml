@@ -1,0 +1,39 @@
+
+
+#purpose    : Test XMPPOutputter
+#description: Provides configuration info for login to Jabber servers via XMPP
+#say        : logging to jabber is nice
+
+#---
+# *** YAML2LOG4R ***
+log4r_config:
+  # define all loggers ...
+  loggers:
+    - name      : mylogger
+      level     : 0
+#      additive  : 'false'
+#      trace     : 'false'
+      outputters:
+        - xmpp
+
+
+  # define all outputters (incl. formatters)      
+  outputters:
+    - type        : XMPPOutputter
+      name        : xmpp
+      level       : 0
+      buffsize    : 10
+      username    : 'log4r@localhost'
+      password    : 'secret'
+      resource    : 'Log4r-XMPP'
+      recipients  : [user1@example.com, user2@example.com]
+      formatter   :
+        date_pattern: '%y%m%d %H:%M:%S'
+        pattern     : '%d %l: %m'
+        type        : PatternFormatter
+        
+---
+#purpose    : TestB
+#description: This is the last YAML doc
+#say        : Bye
+
