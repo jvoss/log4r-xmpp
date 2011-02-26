@@ -173,19 +173,21 @@ describe "XMPP Outputter" do
 
     end # it "should accept strings as keys in the configuration hash" do
 
-    it "should satisfy Log4r::Yamlconfigurator requirements" do
+    it "should satisfy Log4r::YamlConfigurator requirements" do
 
       path = File.dirname(__FILE__)
 
       Log4r::YamlConfigurator.load_yaml_file("#{path}/log4r-xmpp.yaml")
 
-      Log4r::Logger['mylogger'].outputters[0].class.should      == Log4r::XMPPOutputter
-      Log4r::Logger['mylogger'].outputters[0].username.should   == 'log4r@localhost'
-      Log4r::Logger['mylogger'].outputters[0].password.should   == 'secret'
-      Log4r::Logger['mylogger'].outputters[0].resource.should   == 'Log4r-XMPP'
-      Log4r::Logger['mylogger'].outputters[0].recipients.should == ['user1@localhost', 'user2@localhost']
+      log = Log4r::Logger['mylogger']
 
-    end # it "should satisfy Log4r::Yamlconfigurator requirements"
+      log.outputters[0].class.should      == Log4r::XMPPOutputter
+      log.outputters[0].username.should   == 'log4r@localhost'
+      log.outputters[0].password.should   == 'secret'
+      log.outputters[0].resource.should   == 'Log4r-XMPP'
+      log.outputters[0].recipients.should == ['user1@localhost', 'user2@localhost']
+
+    end # it "should satisfy Log4r::YamlConfigurator requirements"
 
   end # describe "Log4r support"
 

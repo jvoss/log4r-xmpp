@@ -17,6 +17,7 @@
 #
 
 require 'log4r'
+require 'log4r-xmpp/yamlconfigurator'
 require 'xmpp4r/client'
 
 module Log4r
@@ -120,13 +121,13 @@ module Log4r
       # Convert hash keys to symbols if provided as strings (as if configured by YAML)
       hash = hash.inject({}){|temp,(k,v)| temp[k.to_sym] = v; temp}
 
-      @buffsize = (hash[:buffsize]    or hash['buffsize'] or 1).to_i
+      @buffsize = hash[:buffsize].to_i ||= 1
 
-      @username = hash[:username]     or raise ArgumentError, "Username required"
-      @password = hash[:password]     or raise ArgumentError, "Password required"
-      @resource = hash[:resource]     ||= 'Log4r'
+      @username = hash[:username]      or raise ArgumentError, "Username required"
+      @password = hash[:password]      or raise ArgumentError, "Password required"
+      @resource = hash[:resource]      ||= 'Log4r'
 
-      @recipients = hash[:recipients] or raise ArgumentError, "Recipients required"
+      @recipients = hash[:recipients]  or raise ArgumentError, "Recipients required"
 
     end # def validate_hash
 
