@@ -16,8 +16,8 @@ log4r_config:
       buffsize    : '10'
       username    : 'log4r@localhost'
       password    : 'secret'
-      resource    : 'Log4r-XMPP'
-      recipients  : [user1@localhost, user2@localhost]
+      resource    : "#{RESOURCE}"
+      recipients  : ["user1@#{DOMAIN}", "user2@#{DOMAIN}"]
       formatter   :
         date_pattern: '%y%m%d %H:%M:%S'
         pattern     : '%d %l: %m'

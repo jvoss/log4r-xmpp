@@ -177,6 +177,9 @@ describe "XMPP Outputter" do
 
       path = File.dirname(__FILE__)
 
+      Log4r::YamlConfigurator['RESOURCE'] = 'Log4r-XMPP'
+      Log4r::YamlConfigurator['DOMAIN']   = 'localhost'
+
       Log4r::YamlConfigurator.load_yaml_file("#{path}/log4r-xmpp.yaml")
 
       log = Log4r::Logger['mylogger']
