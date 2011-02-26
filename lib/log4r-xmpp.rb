@@ -18,3 +18,14 @@
 
 require 'log4r'
 require 'log4r-xmpp/xmppoutputter'
+
+module Log4r
+
+  class XMPPOutputter
+
+    VERSION = '0.0.0'
+
+  end # class XMPPOutputter
+
+end # module Log4r
+  

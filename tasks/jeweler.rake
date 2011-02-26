@@ -1,6 +1,7 @@
 begin
 
   require 'jeweler'
+  require './lib/log4r-xmpp/log4r-xmpp.rb'
 
   Jeweler::Tasks.new do |s|
 
@@ -19,11 +20,13 @@ begin
     s.add_development_dependency 'rcov'
     s.add_development_dependency 'rspec'
 
+    s.version = Log4r::XMPPOutputter::VERSION
+
   end # Jeweler::Tasks.new do |s|
 
 rescue LoadError
 
   puts 'Jeweler, or one of its dependencies, is not available.'
-  puts 'Install it with: gem install technicalpickles-jeweler -s http://gems.github.com'
+  puts 'Install it with: gem install jeweler'
 
 end # begin
