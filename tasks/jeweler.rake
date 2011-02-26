@@ -1,7 +1,9 @@
 begin
 
+  $LOAD_PATH.push('./lib')
+
   require 'jeweler'
-  require './lib/log4r-xmpp/log4r-xmpp.rb'
+  require 'log4r-xmpp'
 
   Jeweler::Tasks.new do |s|
 
