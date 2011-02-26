@@ -16,6 +16,7 @@ begin
     s.add_dependency 'xmpp4r'
 
     s.add_development_dependency 'rake'
+    s.add_development_dependency 'rcov'
     s.add_development_dependency 'rspec'
 
   end # Jeweler::Tasks.new do |s|
