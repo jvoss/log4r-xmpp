@@ -153,8 +153,8 @@ module Log4r
       body = ''
 
       data.kind_of?(Array) ? data.each{|x| body << x} : body = data
-
-      @recipients.each do |recipient|
+      
+      [@recipients].flatten.each do |recipient|
 
         to = recipient
 
