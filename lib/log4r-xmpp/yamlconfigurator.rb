@@ -22,21 +22,19 @@ module Log4r
 
   class YamlConfigurator
 
+    class << self
+
+      alias_method :paramsub_old, :paramsub
+
+    end # class << self
+
     # Monkey patches paramsub to accept arrays as hash values
     #
-    def self.paramsub( str)
+    def self.paramsub(str)
 
-      return nil if str.nil?
+      [str].flatten.each { |val| self.paramsub_old(val) }
 
-      return nil if str.class != String && str.class != Array
-
-      @@params.each do |param, value|
-
-        [str].flatten.each{ |e| e.sub!('#{' + param + '}', value) }
-
-      end # @@params.each
-
-      str.class == String ? "'" + str + "'" : str.inspect
+      str.inspect
 
     end # def self.paramsub
 
