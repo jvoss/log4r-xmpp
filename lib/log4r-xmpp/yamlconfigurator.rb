@@ -30,19 +30,11 @@ module Log4r
 
       return nil if str.class != String && str.class != Array
 
-      @@params.each {|param, value|
+      @@params.each do |param, value|
 
-        if str.class == Array
+        [str].flatten.each{ |e| e.sub!('#{' + param + '}', value) }
 
-          str.each{|e| e.sub!('#{' + param + '}', value) }
-
-        else
-
-          str.sub!('#{' + param + '}', value)
-
-        end # str.class == Array
-
-      }
+      end # @@params.each
 
       str.class == String ? "'" + str + "'" : str.inspect
 

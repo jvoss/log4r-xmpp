@@ -17,7 +17,6 @@
 #
 
 require 'log4r'
-require 'log4r-xmpp/yamlconfigurator'
 require 'xmpp4r/client'
 
 module Log4r

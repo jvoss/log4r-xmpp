@@ -17,9 +17,8 @@
 #
 
 require "rspec"
-require "log4r"
-require "log4r/yamlconfigurator"
 require "log4r-xmpp"
+require "log4r-xmpp/yamlconfigurator"
 
 describe "XMPP Outputter" do
 
