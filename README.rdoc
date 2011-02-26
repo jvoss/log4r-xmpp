@@ -42,3 +42,52 @@ default.
     mylog.outputters = outputter
 
     mylog.debug "This is a test message sent at level DEBUG"
+
+== Using Log4r-XMPP with Log4r::YamlConfigurator
+
+Requiring 'log4r-xmpp/yamlconfigurator' will patch Log4r::YamlConfigurator to
+accept an array list of recipients. Substitutions are still taken into
+consideration.
+
+===Example YAML:
+
+    ---
+    # *** YAML2LOG4R ***
+    log4r_config:
+      # define all loggers ...
+      loggers:
+        - name      : mylog
+          level     : DEBUG
+          trace     : 'false'
+          outputters:
+            - xmpp
+
+      # define all outputters (incl. formatters)
+      outputters:
+        - type        : XMPPOutputter
+          name        : 'xmpp'
+          buffsize    : '10'
+          username    : 'log4r@localhost'
+          password    : 'secret'
+          resource    : "#{RESOURCE}"
+          recipients  : ["user1@#{DOMAIN}", "user2@#{DOMAIN}"]
+          formatter   :
+            date_pattern: '%y%m%d %H:%M:%S'
+            pattern     : '%d %l: %m'
+            type        : PatternFormatter
+
+===Example Loading:
+
+    require 'log4r-xmpp'
+    require 'log4r-xmpp/yamlconfigurator'
+
+    path = File.dirname(__FILE__)
+
+    Log4r::YamlConfigurator['RESOURCE'] = 'Log4r-XMPP'
+    Log4r::YamlConfigurator['DOMAIN']   = 'localhost'
+
+    Log4r::YamlConfigurator.load_yaml_file("#{path}/log4r-xmpp.yaml")
+
+    mylog = Log4r::Logger['mylog']
+
+    mylog.debug "This is a test message sent at level DEBUG"
