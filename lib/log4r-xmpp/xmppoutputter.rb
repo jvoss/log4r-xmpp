@@ -63,7 +63,7 @@ module Log4r
 
       rescue => e
 
-        xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
+        xmpp_error = "#{e.class}: #{e.message}"
 
         Logger.log_internal(-2) do
 
@@ -79,6 +79,13 @@ module Log4r
     # during initialization.
     #
     def connect
+
+      Jabber::logger = Log4r::Logger['xmpp4r'].nil? ? Log4r::Logger.new('xmpp4r')\
+                                                    : Log4r::Logger['xmpp4r']
+
+      # Enable XMPP4r library to log DEBUG events to the internal logger
+      #
+      Jabber::warnings = true
 
       jid = Jabber::JID::new("#{@username}/#{@resource}")
 
@@ -140,7 +147,7 @@ module Log4r
 
         @buff.push event if @buff.size <= @buffsize
 
-        flush if @buff.size == @buffsize # TODO a better way to clear the buffer?
+        flush if @buff.size >= @buffsize
 
       end # synch
 
@@ -166,7 +173,7 @@ module Log4r
 
         rescue => e
 
-          xmpp_error = "#{e.class}: #{e.message} #{e.backtrace}"
+          xmpp_error = "#{e.class}: #{e.message}"
 
           Logger.log_internal(-2) do
 
