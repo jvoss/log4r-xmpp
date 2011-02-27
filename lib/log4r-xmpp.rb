@@ -23,7 +23,7 @@ module Log4r
 
   class XMPPOutputter
 
-    VERSION = '0.0.0'
+    VERSION = '0.1.0'
 
   end # class XMPPOutputter
 

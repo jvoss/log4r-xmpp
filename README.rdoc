@@ -4,6 +4,10 @@
 
 Log4r-XMPP adds a XMPP/Jabber outputter to Log4r.
 
+== Installation
+
+    $ gem install log4r-xmpp
+
 == Requirements
 
 The following gems are required to use Log4r-XMPP:
