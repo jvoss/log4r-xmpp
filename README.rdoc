@@ -16,9 +16,6 @@ The following gems are required to use Log4r-XMPP:
 * Do NOT include Log4r into your namespace! XMPP4r uses the generic Logger
   library and would become present in your namespace.
 
-* If using the XMPPOutputter to log messages from the internal logger named
-  'xmpp4r' be sure to set the level of XMPPOutputter above DEBUG.
-
 == Using Log4r-XMPP
 
 Requiring 'log4r-xmpp' will add an XMPPOutputter to Log4r. It is as simple as
@@ -102,7 +99,5 @@ consideration.
 
 == Troubleshooting
 
-XMPP4r's logger facility is setup by default to log to an internal logger
-named 'xmpp4r'. Attach an outputter to view additional debug information. See the
-caveat above if you are considering logging XMPP4r messages through
-XMPPOutputter.
+XMPP4r's logger facility logs to an internal logger named 'xmpp4r'. Attach an
+outputter to view additional warning information. 
