@@ -26,6 +26,8 @@ begin
 
   end # Jeweler::Tasks.new do |s|
 
+  Jeweler::GemcutterTasks.new
+
 rescue LoadError
 
   puts 'Jeweler, or one of its dependencies, is not available.'
